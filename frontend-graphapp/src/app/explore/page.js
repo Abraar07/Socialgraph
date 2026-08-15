@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-const API = "http://localhost:8080/api/users";
+const API = process.env.NEXT_PUBLIC_API_URL;
 
 export default function ExplorePage() {
 
