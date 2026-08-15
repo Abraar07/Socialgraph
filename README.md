@@ -473,6 +473,8 @@ SocialGraph/
 │       │   │       │
 │       │   │       ├── config/
 │       │   │       │   └── CognoDBConfig.java
+|       |   |       |   └── CognoDBConfig.java
+|       |   |       |   └── CorsConfig.java
 │       │   │       │
 │       │   │       ├── controller/
 │       │   │       │   └── UserController.java
@@ -500,6 +502,7 @@ SocialGraph/
     ├── eslint.config.mjs
     ├── postcss.config.mjs
     ├── .gitignore
+    ├── Dockerfile
     │
     ├── public/
     │
@@ -551,7 +554,7 @@ NEXT_PUBLIC_API_URL=http://localhost:8080/api/users
 For production:
 
 ```env
-NEXT_PUBLIC_API_URL=https://<hosted-backend>/api/users
+NEXT_PUBLIC_API_URL=https://socialgraph-backend.onrender.com/api/users
 ```
 
 Actual credentials must never be placed in README, source code or committed `.env` files.
@@ -603,11 +606,18 @@ The dataset is sized appropriately for demonstrating the use case.
 
 ### Prerequisites
 
-- Java
+- Java 25
 - Maven
 - Node.js
 - npm
 - CognoDB Cloud instance
+
+### Clone the repository and navigate into the project:
+
+```bash
+git clone https://github.com/<your-github-username>/Socialgraph.git
+cd Socialgraph
+```
 
 ### Backend
 
@@ -703,11 +713,43 @@ Then include them here:
 
 ## 18. Hosted Demo
 
-**Live Application:** `ADD_HOSTED_APPLICATION_URL_HERE`
+### Live Application
 
-The hosted application provides the complete SocialGraph experience.
+**Frontend:**  
+https://socialgraph-frontend.vercel.app/
+
+**Backend:**  
+https://socialgraph-backend.onrender.com/
+
+### Initial Access
+
+The backend is hosted on Render using a free instance. When the backend has been inactive for some time, the service may enter a sleep state and require a short startup period when accessed again.
+
+Before accessing the frontend for the first time, verify that the backend is running by opening:
+
+https://socialgraph-backend.onrender.com/api/users/discover
+
+The endpoint should return the SocialGraph user data in JSON format. Once the backend is active, access the frontend application:
+
+https://socialgraph-frontend.vercel.app/
 
 The frontend communicates with the hosted Spring Boot backend, which connects to CognoDB using environment-configured credentials.
+
+### Deployment Architecture
+
+```text
+Vercel
+SocialGraph Frontend
+        |
+        | REST API
+        ↓
+Render
+Spring Boot Backend
+        |
+        | Neo4j Java Driver
+        ↓
+CognoDB
+```
 
 ## 19. Screen Recording
 
