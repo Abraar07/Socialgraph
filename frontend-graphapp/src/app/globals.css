@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+/* =========================
+   GLOBAL
+========================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: #08090d;
+  color: white;
+}
+
+a {
+  text-decoration: none;
+}
+
+
+/* =========================
+   CUSTOM ANIMATION
+========================= */
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}

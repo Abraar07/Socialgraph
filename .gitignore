@@ -1,0 +1,21 @@
+# IntelliJ / Java
+.idea/
+*.iml
+target/
+
+# Next.js
+.next/
+node_modules/
+out/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+
+# OS files
+Thumbs.db
+.DS_Store
