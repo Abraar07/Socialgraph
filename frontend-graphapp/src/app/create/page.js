@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 export default function CreateAccount() {
 
   const router = useRouter();
+  const API = process.env.NEXT_PUBLIC_API_URL;
 
   const [form, setForm] = useState({
     name: "",
@@ -40,7 +41,7 @@ export default function CreateAccount() {
     try {
 
       const response = await fetch(
-        "http://localhost:8080/api/users",
+        API,
         {
           method: "POST",
 
