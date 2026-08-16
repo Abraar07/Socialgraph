@@ -134,17 +134,18 @@ export default function Home() {
 
               {/* User name */}
 
-              <div className="hidden items-center gap-2 px-3 text-sm text-zinc-300 sm:flex">
+              <Link
+                  href={`/profile/${user.userId}`}
+                  className="hidden items-center gap-2 px-3 text-sm text-zinc-300 transition hover:text-white sm:flex"
+              >
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-violet-500 text-xs font-semibold">
+                      {user.name?.charAt(0)?.toUpperCase()}
+                  </div>
 
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-violet-500 text-xs font-semibold">
-                  {user.name?.charAt(0)?.toUpperCase()}
-                </div>
-
-                <span>
-                  {user.name}
-                </span>
-
-              </div>
+                  <span>
+                      {user.name}
+                  </span>
+              </Link>
 
 
               {/* Logout */}

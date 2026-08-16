@@ -15,6 +15,8 @@ export default function FriendsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  const API = process.env.NEXT_PUBLIC_API_URL;
+
 
   /*
    * =========================
@@ -63,7 +65,7 @@ export default function FriendsPage() {
       setError("");
 
       const response = await fetch(
-        `http://localhost:8080/api/users/${userId}/friends`
+        `${API}/${userId}/friends`
       );
 
       if (!response.ok) {

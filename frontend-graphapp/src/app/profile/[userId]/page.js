@@ -258,6 +258,74 @@ export default function ProfilePage() {
 
 
     /*
+    * ==========================
+    * DELETE ACCOUNT
+    * ==========================
+    */
+
+    const handleDeleteAccount = async () => {
+
+        if (!currentUser) {
+            router.push("/login");
+            return;
+        }
+
+        const confirmed = window.confirm(
+            "Are you sure you want to delete your account? This action cannot be undone."
+        );
+
+        if (!confirmed) {
+            return;
+        }
+
+        setFriendLoading(true);
+        setError("");
+
+        try {
+
+            const response = await fetch(
+                `${API}/${currentUser.userId}`,
+                {
+                    method: "DELETE",
+                }
+            );
+
+            const data = await response.text();
+
+            if (!response.ok) {
+                throw new Error(
+                    data || "Unable to delete account"
+                );
+            }
+
+            /*
+            * Account deleted successfully.
+            * Remove the local login session.
+            */
+
+            localStorage.removeItem("socialgraph_user");
+
+            /*
+            * Go back to home page.
+            */
+
+            router.push("/");
+
+        } catch (err) {
+
+            setError(
+                err.message || "Unable to delete account"
+            );
+
+        } finally {
+
+            setFriendLoading(false);
+
+        }
+    };
+
+
+    /*
      * ==========================
      * LOADING
      * ==========================
@@ -434,9 +502,18 @@ export default function ProfilePage() {
 
                                 {isOwnProfile ? (
 
-                                    <div className="rounded-xl border border-white/10 bg-white/[0.03] px-5 py-3 text-center text-sm text-zinc-400">
-                                        This is your profile
-                                    </div>
+                                    <button
+                                        onClick={handleDeleteAccount}
+                                        disabled={friendLoading}
+                                        className="w-full rounded-xl border border-red-400/20 bg-red-400/10 px-5 py-3.5 text-sm font-semibold text-red-300 transition hover:bg-red-400/20 disabled:cursor-not-allowed disabled:opacity-50"
+                                    >
+
+                                        {friendLoading
+                                            ? "Deleting account..."
+                                            : "Delete Account"
+                                        }
+
+                                    </button>
 
                                 ) : isFriend ? (
 
@@ -553,9 +630,15 @@ function Navbar({ currentUser }) {
 
                             <Link
                                 href={`/profile/${currentUser.userId}`}
-                                className="text-sm text-zinc-300 transition hover:text-white"
+                                className="flex items-center gap-2 rounded-xl px-2 py-1.5 text-sm text-zinc-300 transition hover:bg-white/[0.05] hover:text-white"
                             >
-                                {currentUser.name}
+                                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-violet-500 text-xs font-semibold">
+                                    {currentUser.name?.charAt(0)?.toUpperCase()}
+                                </div>
+
+                                <span>
+                                    {currentUser.name}
+                                </span>
                             </Link>
 
                             <button

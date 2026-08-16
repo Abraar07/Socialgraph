@@ -12,6 +12,8 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  const API = process.env.NEXT_PUBLIC_API_URL;
+
 
   const handleSubmit = async (e) => {
 
@@ -23,7 +25,7 @@ export default function Login() {
   try {
 
     const response = await fetch(
-      `http://localhost:8080/api/users/${userId}`
+      `${API}/${userId}`
     );
 
     // Check status BEFORE trying to parse JSON

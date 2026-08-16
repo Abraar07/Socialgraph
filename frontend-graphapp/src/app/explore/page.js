@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 const API = process.env.NEXT_PUBLIC_API_URL;
 
 export default function ExplorePage() {
-
+    
   const [currentUser, setCurrentUser] = useState(null);
   const [authChecked, setAuthChecked] = useState(false);
 
@@ -539,16 +539,16 @@ export default function ExplorePage() {
               <>
 
                 <Link
-                  href={`/profile/${currentUser.userId}`}
-                  className="
-                    text-zinc-400
-                    transition
-                    hover:text-white
-                  "
+                    href={`/profile/${currentUser.userId}`}
+                    className="flex items-center gap-2 rounded-xl px-2 py-1.5 text-sm text-zinc-300 transition hover:bg-white/[0.05] hover:text-white"
                 >
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-violet-500 text-xs font-semibold">
+                        {currentUser.name?.charAt(0)?.toUpperCase()}
+                    </div>
 
-                  {currentUser.name}
-
+                    <span>
+                        {currentUser.name}
+                    </span>
                 </Link>
 
 
