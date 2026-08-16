@@ -194,6 +194,31 @@ public class UserRepository {
         }
     }
 
+    public boolean removeFriend(long userId, long friendId) {
+
+        String cypher = """
+        MATCH (u:User {user_id: $userId})
+              -[r:FRIEND]->
+              (f:User {user_id: $friendId})
+        DELETE r
+        """;
+
+        try (var session = driver.session()) {
+
+            var result = session.run(
+                    cypher,
+                    Map.of(
+                            "userId", userId,
+                            "friendId", friendId
+                    )
+            );
+
+            return result.consume()
+                    .counters()
+                    .relationshipsDeleted() > 0;
+        }
+    }
+
     public List<User> getFriends(long userId) {
 
         String cypher = """

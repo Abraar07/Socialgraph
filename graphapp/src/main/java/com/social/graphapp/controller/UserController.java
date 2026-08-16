@@ -94,6 +94,22 @@ public class UserController {
         }
     }
 
+    @DeleteMapping("/{userId}/friends/{friendId}")
+    public ResponseEntity<String> removeFriend(
+            @PathVariable long userId,
+            @PathVariable long friendId) {
+
+        boolean removed = userService.removeFriend(userId, friendId);
+
+        if (!removed) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Friend relationship not found");
+        }
+
+        return ResponseEntity.ok("Friend removed successfully");
+    }
+
     @GetMapping("/{userId}/friends/{friendId}/status")
     public ResponseEntity<Map<String, Boolean>> getFriendStatus(
             @PathVariable long userId,

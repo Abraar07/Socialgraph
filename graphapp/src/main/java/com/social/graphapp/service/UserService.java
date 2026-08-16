@@ -34,6 +34,10 @@ public class UserService {
         return userRepository.addFriend(userId, friendId);
     }
 
+    public boolean removeFriend(long userId, long friendId) {
+        return userRepository.removeFriend(userId, friendId);
+    }
+
     public boolean areFriends(long userId, long friendId) {
         return userRepository.areFriends(userId, friendId);
     }

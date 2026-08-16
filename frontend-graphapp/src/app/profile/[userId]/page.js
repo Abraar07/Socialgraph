@@ -21,6 +21,8 @@ export default function ProfilePage() {
 
     const [error, setError] = useState("");
 
+    const API = process.env.NEXT_PUBLIC_API_URL;
+
 
     /*
      * ==========================
@@ -51,7 +53,7 @@ export default function ProfilePage() {
                  */
 
                 const response = await fetch(
-                    `http://localhost:8080/api/users/${userId}`
+                    `${API}/${userId}`
                 );
 
 
@@ -85,7 +87,7 @@ export default function ProfilePage() {
                     const loggedUser = JSON.parse(storedUser);
 
                     const statusResponse = await fetch(
-                        `http://localhost:8080/api/users/${loggedUser.userId}/friends/${userId}/status`
+                        `${API}/${loggedUser.userId}/friends/${userId}/status`
                     );
 
 
@@ -149,12 +151,13 @@ export default function ProfilePage() {
 
 
         setFriendLoading(true);
+        setError("");
 
 
         try {
 
             const response = await fetch(
-                `http://localhost:8080/api/users/${currentUser.userId}/friends/${userId}`,
+                `${API}/${currentUser.userId}/friends/${userId}`,
                 {
                     method: "POST",
                 }
@@ -183,6 +186,68 @@ export default function ProfilePage() {
 
             setError(
                 err.message || "Unable to add friend"
+            );
+
+        } finally {
+
+            setFriendLoading(false);
+        }
+    };
+
+
+    /*
+     * ==========================
+     * UNFRIEND
+     * ==========================
+     */
+
+    const handleUnfriend = async () => {
+
+        if (!currentUser) {
+            router.push("/login");
+            return;
+        }
+
+
+        setFriendLoading(true);
+        setError("");
+
+
+        try {
+
+            const response = await fetch(
+                `${API}/${currentUser.userId}/friends/${userId}`,
+                {
+                    method: "DELETE",
+                }
+            );
+
+
+            const data = await response.text();
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data || "Unable to unfriend"
+                );
+            }
+
+
+            /*
+             * Update UI immediately.
+             *
+             * The FRIEND relationship has now
+             * been deleted from CognoDB.
+             */
+
+            setIsFriend(false);
+
+
+        } catch (err) {
+
+            setError(
+                err.message || "Unable to unfriend"
             );
 
         } finally {
@@ -376,10 +441,16 @@ export default function ProfilePage() {
                                 ) : isFriend ? (
 
                                     <button
-                                        disabled
-                                        className="w-full cursor-default rounded-xl border border-emerald-400/20 bg-emerald-400/10 px-5 py-3.5 text-sm font-semibold text-emerald-300"
+                                        onClick={handleUnfriend}
+                                        disabled={friendLoading}
+                                        className="w-full rounded-xl border border-red-400/20 bg-red-400/10 px-5 py-3.5 text-sm font-semibold text-red-300 transition hover:bg-red-400/20 disabled:cursor-not-allowed disabled:opacity-50"
                                     >
-                                        ✓ Already a Friend
+
+                                        {friendLoading
+                                            ? "Unfriending..."
+                                            : "− Unfriend"
+                                        }
+
                                     </button>
 
                                 ) : (
